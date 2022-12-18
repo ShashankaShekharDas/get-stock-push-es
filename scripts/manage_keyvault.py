@@ -37,9 +37,10 @@ class Manage_Keyvault:
         return self.client.get_secret(self.secret_names[secret_name]).value
 
     def refresh_environment_variable(self):
-        rc = subprocess.call(os.path.join(os.getcwd(), "scripts", "environment_variable.sh"))
+        path = os.path.join(os.getcwd(), "scripts", "environment_variable.sh")
         if __name__ == "__main__":
-            rc = subprocess.call(os.path.join(os.getcwd(), "environment_variable.sh"))
+            path = os.path.join(os.getcwd(), "environment_variable.sh")
+        rc = subprocess.call(path)
         print(rc)
 
 
