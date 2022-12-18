@@ -3,12 +3,16 @@ import os
 from azure.identity import DefaultAzureCredential
 from azure.keyvault.secrets import SecretClient
 
+from scripts import SECRETS_NAME
+import subprocess
+
 
 class Manage_Keyvault:
     """
         Manage Azure Keyvault
         Gets the Secrets from Azure Keyvault and returns the value of the secret
     """
+
     def __init__(self):
         self.keyVaultName = os.environ["KEY_VAULT_NAME"]
         self.KVUri = f"https://{self.keyVaultName}.vault.azure.net"
@@ -24,4 +28,15 @@ class Manage_Keyvault:
         }
 
     def get_secret(self, secret_name):
+        """
+            Not Using due to Issue in Azure Virtual Machine, authenticating using  az login and bash script to create env variable
+        """
         return self.client.get_secret(self.secret_names[secret_name]).value
+
+    def refresh_environment_variable(self):
+        rc = subprocess.call("environment_variable.sh")
+        print(rc)
+
+
+if __name__ == "__main__":
+    Manage_Keyvault().refresh_environment_variable()

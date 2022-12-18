@@ -1,3 +1,5 @@
+#!/bin/sh
+
 export es_username=$(az keyvault secret show --name "ES-USERNAME" --vault-name "Data-Ingest" --query "value")
 export es_password=$(az keyvault secret show --name "ES-PASSWORD" --vault-name "Data-Ingest" --query "value")
 export es_url=$(az keyvault secret show --name "ES-DOMAIN-ENDPOINT" --vault-name "Data-Ingest" --query "value")
