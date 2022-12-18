@@ -1,9 +1,9 @@
+import csv
+import os
 from datetime import datetime
 
 from get_stock_data_push_to_ES import INDEX_NAME, INDEX_SHARDS, DATA_DIRECTORY
 from scripts.manage_es import Manage_ES
-import os
-import csv
 
 
 def format_data(columns, row):

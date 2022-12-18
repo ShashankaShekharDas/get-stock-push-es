@@ -1,10 +1,8 @@
 import os
+import subprocess
 
 from azure.identity import DefaultAzureCredential
 from azure.keyvault.secrets import SecretClient
-
-from scripts import SECRETS_NAME
-import subprocess
 
 
 class Manage_Keyvault:
@@ -26,6 +24,8 @@ class Manage_Keyvault:
             "aws_access_key_id": "aws-access-key-id",
             "aws_secret_access_key": "aws-secret-access-key"
         }
+        self.bash_command = "az keyvault secret show --name {{secret-name}} --vault-name 'Data-Ingest' " \
+                            "--query 'value' "
 
     def get_secret(self, secret_name):
         """
@@ -36,13 +36,11 @@ class Manage_Keyvault:
         self.keyVaultName = os.environ["KEY_VAULT_NAME"]
         return self.client.get_secret(self.secret_names[secret_name]).value
 
-    def refresh_environment_variable(self):
-        path = os.path.join(os.getcwd(), "scripts", "environment_variable.sh")
-        if __name__ == "__main__":
-            path = os.path.join(os.getcwd(), "environment_variable.sh")
-        rc = subprocess.call(path)
-        print(rc)
+    def get_secret_bash(self, secret_name):
+        result = subprocess.run(self.bash_command.replace("{{secret-name}}", "'" + self.secret_names[secret_name] + "'"),
+                                stdout=subprocess.PIPE, shell=True)
+        return result.stdout.decode("utf-8")
 
 
 if __name__ == "__main__":
-    Manage_Keyvault().refresh_environment_variable()
+    Manage_Keyvault().get_secret_bash("aws_secret_access_key")

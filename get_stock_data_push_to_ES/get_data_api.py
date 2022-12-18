@@ -1,8 +1,6 @@
 import os
-import time
 from datetime import datetime
 
-import schedule
 import yfinance as yf
 
 # Importing Constants

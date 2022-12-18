@@ -22,9 +22,9 @@ class Manage_ES:
         self.http_requests = HTTP_Requests()
 
         # Initialize Class Variables
-        self.__host = self.manage_keyvault.get_secret("ES_URL")
-        self.__aws_access_key_id = self.manage_keyvault.get_secret("aws_access_key_id")
-        self.__aws_secret_access_key = self.manage_keyvault.get_secret("aws_secret_access_key")
+        self.__host = self.manage_keyvault.get_secret_bash("ES_URL")
+        self.__aws_access_key_id = self.manage_keyvault.get_secret_bash("aws_access_key_id")
+        self.__aws_secret_access_key = self.manage_keyvault.get_secret_bash("aws_secret_access_key")
         self.region = 'ap-south-1'
 
         # Initialize Credentials
