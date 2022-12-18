@@ -8,7 +8,7 @@ from scripts.manage_es import Manage_ES
 
 def format_data(columns, row):
     keys = list(columns.keys())
-    for i in range(len(keys)):
+    for i in range(len(row)):
         if keys[i] == "Datetime":
             # Converting Datetime from string so Kibana can view it as timestamp
             columns[keys[i]] = datetime.strptime(row[i], '%Y-%m-%d %H:%M:%S%z')
@@ -22,6 +22,7 @@ class Elastic_Search:
         self.__elastic = Manage_ES()
 
     def send_file_content_to_es(self, file_name):
+        ticker_name = "".join([i for i in file_name.replace(".csv", "") if i not in "123456567890"])
         csv_file = os.path.join(DATA_DIRECTORY, file_name)
         columns = {}
         with open(csv_file, newline='\n') as csvfile:
@@ -29,6 +30,7 @@ class Elastic_Search:
             for row in reader:
                 if not columns:
                     columns = {i: None for i in row}
+                    columns["ticker"] = ticker_name
                     continue
                 self.__elastic.insert_document(INDEX_NAME, format_data(columns, row))
 
