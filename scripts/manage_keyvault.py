@@ -37,9 +37,11 @@ class Manage_Keyvault:
         return self.client.get_secret(self.secret_names[secret_name]).value
 
     def get_secret_bash(self, secret_name):
-        result = subprocess.run(self.bash_command.replace("{{secret-name}}", "'" + self.secret_names[secret_name] + "'"),
-                                stdout=subprocess.PIPE, shell=True)
-        return result.stdout.decode("utf-8")
+        result = subprocess.run(
+            self.bash_command.replace("{{secret-name}}", "'" + self.secret_names[secret_name] + "'"),
+            stdout=subprocess.PIPE, shell=True)
+        # Since output from bash, includes new line character and double quotes
+        return result.stdout.decode("utf-8").replace("\n", "").replace('"', '').strip()
 
 
 if __name__ == "__main__":
