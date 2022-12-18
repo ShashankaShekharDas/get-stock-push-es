@@ -1,7 +1,6 @@
 import boto3
 from opensearchpy import OpenSearch, RequestsHttpConnection, AWSV4SignerAuth
 
-from scripts.http_requests import HTTP_Requests
 from scripts.manage_keyvault import Manage_Keyvault
 
 
