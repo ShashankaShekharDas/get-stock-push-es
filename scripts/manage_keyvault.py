@@ -14,10 +14,10 @@ class Manage_Keyvault:
     """
 
     def __init__(self):
+        self.credential = None
+        self.client = None
         self.keyVaultName = os.environ["KEY_VAULT_NAME"]
         self.KVUri = f"https://{self.keyVaultName}.vault.azure.net"
-        self.credential = DefaultAzureCredential()
-        self.client = SecretClient(vault_url=self.KVUri, credential=self.credential)
 
         self.secret_names = {
             "ES_USERNAME": "ES-USERNAME",
@@ -31,6 +31,8 @@ class Manage_Keyvault:
         """
             Not Using due to Issue in Azure Virtual Machine, authenticating using  az login and bash script to create env variable
         """
+        self.credential = DefaultAzureCredential()
+        self.client = SecretClient(vault_url=self.KVUri, credential=self.credential)
         return self.client.get_secret(self.secret_names[secret_name]).value
 
     def refresh_environment_variable(self):
