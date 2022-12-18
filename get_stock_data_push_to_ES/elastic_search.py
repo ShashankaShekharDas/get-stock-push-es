@@ -22,7 +22,7 @@ class Elastic_Search:
         self.__elastic = Manage_ES()
 
     def send_file_content_to_es(self, file_name):
-        csv_file = DATA_DIRECTORY + file_name
+        csv_file = os.path.join(DATA_DIRECTORY, file_name)
         columns = {}
         with open(csv_file, newline='\n') as csvfile:
             reader = csv.reader(csvfile, delimiter='\t', quotechar='|')
@@ -40,6 +40,3 @@ class Elastic_Search:
 
         for file in os.listdir(DATA_DIRECTORY):
             self.send_file_content_to_es(file)
-
-
-
