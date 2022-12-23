@@ -41,6 +41,15 @@ class Manage_ES:
             connection_class=RequestsHttpConnection
         )
 
+    def refresh_connection(self):
+        self.__client = OpenSearch(
+            hosts=[{'host': self.__host, 'port': 443}],
+            http_auth=self.__auth,
+            use_ssl=True,
+            verify_certs=True,
+            connection_class=RequestsHttpConnection
+        )
+
     def create_index(self, index_name, number_of_shards=5):
         index_body = {
             'settings': {
@@ -90,11 +99,15 @@ class Manage_ES:
         )
 
     def insert_document(self, index_name, document):
-        return self.__client.index(
-            index=index_name,
-            body=document,
-            refresh=True
-        )
+        try:
+            insert_document = self.__client.index(
+                index=index_name,
+                body=document,
+                refresh=True
+            )
+            return {i: insert_document[i] for i in {"_index", "_id", "result"}}
+        except Exception:
+            return False
 
 
 if __name__ == "__main__":
